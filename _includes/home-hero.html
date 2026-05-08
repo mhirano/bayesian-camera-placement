@@ -9,19 +9,20 @@
         <div class="hero-content wow animated fadeIn">
 
           <div style="padding: 20px 0px 0px 0px;">
-            <h2 class="text-center">Project Title</h2>
+            <h2 class="text-center">Detection-and-Tracking-Oriented Roadside Camera Placement via Observation-Augmented Bayesian Optimization</h2>
           </div>
           <div style="padding: 10px 0px 0px 0px;">
             <div style="text-align:center;font-size:14pt;">
               <div style="padding: 5px 0px 5px 0px">
-                <a href="http://link-to-author-1-website/">Author 1<sup>&#8224</sup></a>,
-                <a href="http://link-to-author-2-website/">Author 2<sup>&#8224</sup></a>
+                <a href="http://link-to-author-1-website/">Masahiro Hirano<sup>&#8224</sup></a>,
+                Hayato Fujii<sup>&#8224</sup>,
+                <a href="http://link-to-author-2-website/">Yuji Yamakawa<sup>&#8224</sup></a>
               </div>
               <div style="padding: 5px 0px 5px 0px">
-                <span><sup>&#8224</sup> Your affiliation</span>
+                <span><sup>&#8224</sup>The University of Tokyo</span>
               </div>
               <div style="padding: 5px 0px 5px 0px">
-                <div class="venue text-center"><b>CONFERENCE YEAR</b></div>
+                <div class="venue text-center"><b>2026</b></div>
               </div>
             </div>
           </div>
@@ -29,7 +30,7 @@
           <div class="hero-buttons">
 
             {% if site.twitter_username != '' %}
-              <a href="https://link-to-arxiv/"><button class="btn btn-default btn-lg"><i class="fa fa-paperclip fa-lg"></i>Paper</button></a>
+              <a href="./res/hirano_ITSC2026.pdf"><button class="btn btn-default btn-lg"><i class="fa fa-paperclip fa-lg"></i>Paper</button></a>
             {% endif %}
             {% if site.github_username != '' %}
               <a href="https://link-to-youtube/"><button class="btn btn-default btn-lg"><i class="fa fa-youtube-play fa-lg"></i>YouTube</button></a>
@@ -46,7 +47,22 @@
           <div class="section">
             <h3>Abstract</h3>
             <hr>
-            <p>Abstract</p>
+            <p>
+              This paper proposes a roadside camera placement method that directly maximizes detection and tracking performance via
+              Bayesian optimization.
+              Conventional geometric approaches model the sensing space explicitly and optimize sensor layouts to maximize spatial
+              coverage; however, they typically assume homogeneous sensors and environments, and therefore cannot reflect the
+              performance of the actual perception algorithms to be deployed, nor site-specific factors that affect sensing (e.g.,
+              low-angle sunlight).
+              To address this limitation, we design an evaluation metric for a roadside camera system that is computed in simulation
+              using a practical object detection and tracking pipeline, and we directly maximize the metric via Bayesian optimization.
+              Furthermore, to reduce the impact of the computational cost dominated by simulation in Bayesian optimization, we propose
+              to place more cameras than the intended number to augment observations that can be evaluated per simulation run, thereby
+              significantly reducing the overall optimization time.
+              Experiments demonstrate that our method successfully derives a camera placement with performance superior to the best
+              placement designed by multiple human participants, while achieving more than a 4 times speedup compared to the
+              optimization without observation augmentation.
+            </p>
           </div>
           <br>
           <div class="section">
@@ -63,22 +79,22 @@
             </div>
           </div>
           <br>
-          <div class="section">
+          <!-- <div class="section">
             <h3>Video</h3>
             <hr />
             <iframe class="youtube-video" src="https://www.youtube.com/embed/5kW0RtcJZC8" title="YouTube video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
           </div>
-          <br>
+          <br> -->
           <div class="section">
             <h3>Citation</h3>
             <hr />
             <div style="text-align:left;font-size:8px;">
               <pre><code>
-@inproceedings{AuthorsYear,
-  title={Paper title},
-  author={Authors},
-  booktitle={Conference},
-  year={Year}
+@inproceedings{hirano2026bayesian,
+  title={Detection-and-Tracking-Oriented Roadside Camera Placement via Observation-Augmented Bayesian Optimization},
+  author={Masahiro Hirano and Hayato Fujii and Yuji Yamakawa},
+  booktitle={Proceedings of 2026 IEEE 29th International Conference on Intelligent Transportation Systems (ITSC)},
+  year={2026}
 }
                 </code></pre>
             </div>
