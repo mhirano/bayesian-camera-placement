@@ -75,7 +75,7 @@
               multi-camera tracking score, and (D) updates a Gaussian process surrogate to propose the next placement. By iterating
               this loop, we obtain placements that yield increasingly higher tracking performance.
             </p>
-            <div style="width:80%;margin-left:auto;margin-right:auto;">
+            <div style="width:60%;margin-left:auto;margin-right:auto;">
               <img class="img-responsive" src="./res/method_flow_chart.png" title="Overview of the proposed method.">
             </div>
             <br>
@@ -86,7 +86,7 @@
               successfully tracked if it is captured by at least one camera. The multi-tracking score is defined as the ratio of
               tracked frames to the total dwell time of vehicles in the target region.
             </p>
-            <div style="width:80%;margin-left:auto;margin-right:auto;">
+            <div style="width:60%;margin-left:auto;margin-right:auto;">
               <img class="img-responsive" src="./res/multi_tracking_score.png" title="Multi-camera tracking status.">
             </div>
             <br>
@@ -97,7 +97,7 @@
               multi-tracking score for combinatorially many camera subsets. This produces multiple observations per simulation,
               drastically reducing the time required to gather a given number of observations.
             </p>
-            <div style="width:90%;margin-left:auto;margin-right:auto;">
+            <div style="width:60%;margin-left:auto;margin-right:auto;">
               <img class="img-responsive" src="./res/time_chart.png" title="Time chart of observation augmentation.">
             </div>
           </div>
@@ -108,9 +108,10 @@
             <p>
               We evaluated our method on the AWSIM driving simulator with a digital twin of Nishi-Shinjuku, optimizing the placement
               of <i>n</i> = 4 cameras around an intersection over 200 cycles. The maximum multi-tracking score steadily improved as
-              the optimization progressed, reaching <b>0.588</b> at cycle 192.
+              the optimization progressed, reaching <b>0.588</b> at cycle 192. For reference, even with extensive trial-and-error, 
+              human-designed placements only marginally exceed 0.6, which highlights the strength of the score automatically obtained by our method.
             </p>
-            <div style="width:70%;margin-left:auto;margin-right:auto;">
+            <div style="width:80%;margin-left:auto;margin-right:auto;">
               <img class="img-responsive" src="./res/score_transition.png" title="Cumulative maximum multi-tracking score.">
             </div>
             <br>
@@ -130,12 +131,30 @@
             <div style="overflow-x:auto;">
               <table class="table table-bordered text-center" style="width:90%;margin-left:auto;margin-right:auto;">
                 <thead>
-                  <tr><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th><th><b>Proposed</b></th></tr>
+                  <tr>
+                    <th colspan="6">Human Experts</th>
+                    <th>Ours</th>
+                  </tr>
+                  <tr>
+                    <th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th>
+                    <th>Proposed</th>
+                  </tr>
                 </thead>
                 <tbody>
-                  <tr><td>0.484</td><td>0.510</td><td>0.388</td><td>0.497</td><td>0.361</td><td>0.422</td><td><b>0.588</b></td></tr>
+                  <tr>
+                    <td>0.484</td>
+                    <td><b>0.510</b></td>
+                    <td>0.388</td>
+                    <td>0.497</td>
+                    <td>0.361</td>
+                    <td>0.422</td>
+                    <td><b>0.588</b></td>
+                  </tr>
                 </tbody>
               </table>
+              <p style="text-align:center;font-size:0.9em;color:#777;margin-top:6px;">
+                Multi-tracking scores. Bold among A&ndash;F indicates the best human placement.
+              </p>
             </div>
             <br>
             <p>
@@ -143,7 +162,7 @@
               We compared the time required to acquire 15 observations between single-point and multi-point observations. The
               proposed observation augmentation achieves more than a 4&times; speedup (17016 s &rarr; 4158 s).
             </p>
-            <div style="width:70%;margin-left:auto;margin-right:auto;">
+            <div style="width:60%;margin-left:auto;margin-right:auto;">
               <img class="img-responsive" src="./res/multi_tracking_score_comparison.png" title="Comparison of single-point and multi-point observations.">
             </div>
             <!-- <div class="row align-items-center">
