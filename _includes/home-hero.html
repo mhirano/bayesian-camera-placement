@@ -14,15 +14,15 @@
           <div style="padding: 10px 0px 0px 0px;">
             <div style="text-align:center;font-size:14pt;">
               <div style="padding: 5px 0px 5px 0px">
-                <a href="http://link-to-author-1-website/">Masahiro Hirano<sup>&#8224</sup></a>,
+                <a href="https://mhirano.github.io/">Masahiro Hirano<sup>&#8224</sup></a>,
                 Hayato Fujii<sup>&#8224</sup>,
-                <a href="http://link-to-author-2-website/">Yuji Yamakawa<sup>&#8224</sup></a>
+                <a href="http://www.hfr.iis.u-tokyo.ac.jp/members/yamakawa/index-e.html">Yuji Yamakawa<sup>&#8224</sup></a>,
               </div>
               <div style="padding: 5px 0px 5px 0px">
                 <span><sup>&#8224</sup>The University of Tokyo</span>
               </div>
               <div style="padding: 5px 0px 5px 0px">
-                <div class="venue text-center"><b>2026</b></div>
+                <div class="venue text-center"><b>ITSC 2026</b></div>
               </div>
             </div>
           </div>
@@ -30,11 +30,11 @@
           <div class="hero-buttons">
 
             {% if site.twitter_username != '' %}
-              <a href="./res/hirano_ITSC2026.pdf"><button class="btn btn-default btn-lg"><i class="fa fa-paperclip fa-lg"></i>Paper</button></a>
+              <a href="./res/hirano_ITSC2026.pdf"><button class="btn btn-default btn-lg"><i class="fa fa-paperclip fa-lg"></i>Paper (Preprint)</button></a>
             {% endif %}
-            {% if site.github_username != '' %}
+            <!-- {% if site.github_username != '' %}
               <a href="https://link-to-youtube/"><button class="btn btn-default btn-lg"><i class="fa fa-youtube-play fa-lg"></i>YouTube</button></a>
-            {% endif %}
+            {% endif %} -->
 
           </div>
 
@@ -66,17 +66,94 @@
           </div>
           <br>
           <div class="section">
+            <h3>Method</h3>
+            <hr />
+            <p>
+              We formulate roadside camera placement as a black-box optimization problem and solve it via Bayesian optimization.
+              Given a 3D digital twin reproducing the target environment, the framework (A) places candidate cameras and runs traffic
+              simulation, (B) performs object detection and tracking on each camera stream, (C) integrates per-camera tracklets into a
+              multi-camera tracking score, and (D) updates a Gaussian process surrogate to propose the next placement. By iterating
+              this loop, we obtain placements that yield increasingly higher tracking performance.
+            </p>
+            <div style="width:80%;margin-left:auto;margin-right:auto;">
+              <img class="img-responsive" src="./res/method_flow_chart.png" title="Overview of the proposed method.">
+            </div>
+            <br>
+            <p>
+              <b>Tracking-score-based objective.</b>
+              Unlike conventional coverage-based formulations, we directly evaluate detection and tracking performance using
+              Multi-Camera Multi-Object Tracking (MCMOT). For each frame, a vehicle inside the target region is regarded as
+              successfully tracked if it is captured by at least one camera. The multi-tracking score is defined as the ratio of
+              tracked frames to the total dwell time of vehicles in the target region.
+            </p>
+            <div style="width:80%;margin-left:auto;margin-right:auto;">
+              <img class="img-responsive" src="./res/multi_tracking_score.png" title="Multi-camera tracking status.">
+            </div>
+            <br>
+            <p>
+              <b>Observation Augmentation.</b>
+              In the Bayesian optimization loop, the simulation and per-camera tracking dominate the overall computation cost. To
+              mitigate this bottleneck, we place more cameras than the planned number in a single simulation run, and evaluate the
+              multi-tracking score for combinatorially many camera subsets. This produces multiple observations per simulation,
+              drastically reducing the time required to gather a given number of observations.
+            </p>
+            <div style="width:90%;margin-left:auto;margin-right:auto;">
+              <img class="img-responsive" src="./res/time_chart.png" title="Time chart of observation augmentation.">
+            </div>
+          </div>
+          <br>
+          <div class="section">
             <h3>Results</h3>
             <hr />
-            <p>Results.</p>
-            <div class="row align-items-center">
+            <p>
+              We evaluated our method on the AWSIM driving simulator with a digital twin of Nishi-Shinjuku, optimizing the placement
+              of <i>n</i> = 4 cameras around an intersection over 200 cycles. The maximum multi-tracking score steadily improved as
+              the optimization progressed, reaching <b>0.588</b> at cycle 192.
+            </p>
+            <div style="width:70%;margin-left:auto;margin-right:auto;">
+              <img class="img-responsive" src="./res/score_transition.png" title="Cumulative maximum multi-tracking score.">
+            </div>
+            <br>
+            <p>
+              The resulting placement covers the intersection from complementary viewpoints with sufficient overlap to support robust
+              cross-camera tracking.
+            </p>
+            <div style="width:80%;margin-left:auto;margin-right:auto;">
+              <img class="img-responsive" src="./res/optimized_camera.png" title="Camera placement at the maximum multi-tracking score.">
+            </div>
+            <br>
+            <p>
+              <b>Comparison with human experts.</b>
+              We compared the proposed method against placements designed by six participants specialized in computer vision. The
+              proposed method outperforms the best human placement by approximately 15%, and the average by approximately 32%.
+            </p>
+            <div style="overflow-x:auto;">
+              <table class="table table-bordered text-center" style="width:90%;margin-left:auto;margin-right:auto;">
+                <thead>
+                  <tr><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th><th><b>Proposed</b></th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>0.484</td><td>0.510</td><td>0.388</td><td>0.497</td><td>0.361</td><td>0.422</td><td><b>0.588</b></td></tr>
+                </tbody>
+              </table>
+            </div>
+            <br>
+            <p>
+              <b>Ablation on Observation Augmentation.</b>
+              We compared the time required to acquire 15 observations between single-point and multi-point observations. The
+              proposed observation augmentation achieves more than a 4&times; speedup (17016 s &rarr; 4158 s).
+            </p>
+            <div style="width:70%;margin-left:auto;margin-right:auto;">
+              <img class="img-responsive" src="./res/multi_tracking_score_comparison.png" title="Comparison of single-point and multi-point observations.">
+            </div>
+            <!-- <div class="row align-items-center">
               <div class="col justify-content-center text-center">
                 <video width="60%" playsinline="" autoplay="" loop="" preload="" muted="">
                   <source src="./res/sample-video.mp4" type="video/mp4">
-                  Your browser does not support the video tag.
+                  your browser does not support the video tag.
                 </video>
               </div>
-            </div>
+            </div> -->
           </div>
           <br>
           <!-- <div class="section">
@@ -90,7 +167,7 @@
             <hr />
             <div style="text-align:left;font-size:8px;">
               <pre><code>
-@inproceedings{hirano2026bayesian,
+@inproceedings{hirano2026bcp,
   title={Detection-and-Tracking-Oriented Roadside Camera Placement via Observation-Augmented Bayesian Optimization},
   author={Masahiro Hirano and Hayato Fujii and Yuji Yamakawa},
   booktitle={Proceedings of 2026 IEEE 29th International Conference on Intelligent Transportation Systems (ITSC)},
