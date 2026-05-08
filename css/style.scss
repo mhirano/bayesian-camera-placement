@@ -126,7 +126,7 @@ button.btn, input.btn {
 .hero-content {
   width: 80%; /* 60% */
   margin: 0 auto;
-  display: table;
+  // display: table;
   @include bp-medium {
     width: 100%;
   }
